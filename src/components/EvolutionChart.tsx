@@ -48,7 +48,7 @@ export default function EvolutionChart() {
     .sort((a, b) => b.avgScore - a.avgScore)
     .slice(0, 6);
 
-  const pollLabels = polls.map((p) => ({ id: p.id, date: shortDate(p.date), source: p.source }));
+  const pollLabels = polls.map((p) => ({ id: p.id, date: shortDate(p.date), source: p.source, url: p.url }));
   const chartW = 700;
   const labelW = 170;
   const rowH = 56;
@@ -111,12 +111,14 @@ export default function EvolutionChart() {
             const x = (i / (polls.length - 1 || 1)) * (chartW - labelW) + labelW;
             return (
               <g key={p.id}>
-                <text x={x} y={sorted.length * rowH + 20} textAnchor="middle" className="text-[10px] fill-zinc-400">
-                  {p.date}
-                </text>
-                <text x={x} y={sorted.length * rowH + 34} textAnchor="middle" className="text-[9px] fill-zinc-300">
-                  {p.source.split("/")[0].trim()}
-                </text>
+                <a href={p.url} target="_blank" rel="noopener noreferrer">
+                  <text x={x} y={sorted.length * rowH + 20} textAnchor="middle" className="text-[10px] fill-zinc-400 hover:fill-elyz-blue">
+                    {p.date}
+                  </text>
+                  <text x={x} y={sorted.length * rowH + 34} textAnchor="middle" className="text-[9px] fill-zinc-300 hover:fill-elyz-blue">
+                    {p.source.split("/")[0].trim()}
+                  </text>
+                </a>
               </g>
             );
           })}
