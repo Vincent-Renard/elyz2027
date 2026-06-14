@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { timelineEvents } from "@/data/timeline";
 import { candidates } from "@/data/candidates";
 
@@ -15,17 +16,19 @@ function EventIcon({
   type,
   highlight,
   candidateId,
+  candidateSlug,
 }: {
   type: string;
   highlight?: boolean;
   candidateId?: string;
+  candidateSlug?: string;
 }) {
   const candidate = candidates.find((c) => c.id === candidateId);
 
   if (type === "candidature" && candidate?.photo) {
-    return (
+    const img = (
       <div
-        className={`flex-shrink-0 ${highlight ? "h-12 w-12 ring-4 ring-blue-100" : "h-10 w-10 ring-4 ring-white"} overflow-hidden rounded-full`}
+        className={`flex-shrink-0 ${highlight ? "h-12 w-12 ring-4 ring-blue-100" : "h-10 w-10 ring-4 ring-white"} overflow-hidden rounded-full transition-opacity hover:opacity-80`}
       >
         <img
           src={candidate.photo}
@@ -34,6 +37,11 @@ function EventIcon({
         />
       </div>
     );
+
+    if (candidateSlug) {
+      return <Link href={`/candidats/${candidateSlug}`}>{img}</Link>;
+    }
+    return img;
   }
 
   const baseClass = highlight
@@ -104,6 +112,7 @@ export default function Timeline() {
                   type={event.type}
                   highlight={event.highlight}
                   candidateId={event.candidateId}
+                  candidateSlug={event.candidateId}
                 />
               </div>
 
@@ -152,7 +161,12 @@ export default function Timeline() {
                   <h3
                     className={`mt-1 text-base font-semibold ${event.highlight ? "text-elyz-blue" : "text-zinc-900"}`}
                   >
-                    {event.label}
+                    <Link
+                      href={`/candidats/${event.candidateId}`}
+                      className="hover:text-elyz-blue hover:underline"
+                    >
+                      {event.label}
+                    </Link>
                   </h3>
                   <p className="mt-1 text-sm text-zinc-500">
                     {event.description}

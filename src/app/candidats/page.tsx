@@ -51,12 +51,15 @@ export default function CandidatsPage() {
               className="rounded-xl border border-zinc-200 bg-white shadow-sm"
             >
               <div className="flex flex-col gap-6 p-6 sm:flex-row">
-                <div className="flex-shrink-0">
+                <Link
+                  href={`/candidats/${candidate.id}`}
+                  className="flex-shrink-0"
+                >
                   {candidate.photo ? (
                     <img
                       src={candidate.photo}
                       alt={candidate.name}
-                      className="h-32 w-32 rounded-full border-2 object-cover"
+                      className="h-32 w-32 rounded-full border-2 object-cover transition-opacity hover:opacity-80"
                       style={{ borderColor: candidate.color }}
                     />
                   ) : (
@@ -67,12 +70,17 @@ export default function CandidatsPage() {
                       {candidate.name.charAt(0)}
                     </div>
                   )}
-                </div>
+                </Link>
 
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-baseline gap-3">
-                    <h2 className="text-xl font-bold text-zinc-900">
-                      {candidate.name}
+                    <h2 className="text-xl font-bold">
+                      <Link
+                        href={`/candidats/${candidate.id}`}
+                        className="text-zinc-900 hover:text-elyz-blue hover:underline"
+                      >
+                        {candidate.name}
+                      </Link>
                     </h2>
                     <span
                       className="rounded-full px-2.5 py-0.5 text-xs font-medium"
