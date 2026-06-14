@@ -1,3 +1,9 @@
+export interface PreviousElection {
+  year: number;
+  round: "1er" | "2nd";
+  score: string;
+}
+
 export interface Candidate {
   id: string;
   name: string;
@@ -10,6 +16,7 @@ export interface Candidate {
   source: string;
   photo?: string;
   mandates?: string[];
+  previousElections?: PreviousElection[];
 }
 
 export const candidates: Candidate[] = [
@@ -27,6 +34,11 @@ export const candidates: Candidate[] = [
     photo:
       "https://upload.wikimedia.org/wikipedia/commons/6/6b/Nathalie_Arthaud_%28LO%29_19-05-2024.jpg",
     mandates: [],
+    previousElections: [
+      { year: 2012, round: "1er", score: "0,56%" },
+      { year: 2017, round: "1er", score: "0,64%" },
+      { year: 2022, round: "1er", score: "0,56%" },
+    ],
   },
   {
     id: "francois-asselineau",
@@ -44,6 +56,10 @@ export const candidates: Candidate[] = [
     mandates: [
       "Conseiller de Paris (2008-2014)",
       "Conseiller régional d'Île-de-France (2010-2015)",
+    ],
+    previousElections: [
+      { year: 2017, round: "1er", score: "0,92%" },
+      { year: 2022, round: "1er", score: "0,06%" },
     ],
   },
   {
@@ -138,6 +154,11 @@ export const candidates: Candidate[] = [
       "Maire de Yerres (1995-2017)",
       "Président de Debout la France (depuis 2008)",
     ],
+    previousElections: [
+      { year: 2012, round: "1er", score: "1,79%" },
+      { year: 2017, round: "1er", score: "4,70%" },
+      { year: 2022, round: "1er", score: "2,06%" },
+    ],
   },
   {
     id: "jerome-guedj",
@@ -192,6 +213,13 @@ export const candidates: Candidate[] = [
       "Présidente du Rassemblement National (depuis 2011)",
       "Conseillère régionale du Nord-Pas-de-Calais (1998-2004)",
       "Conseillère municipale d'Hénin-Beaumont (2008-2011)",
+    ],
+    previousElections: [
+      { year: 2012, round: "1er", score: "17,90%" },
+      { year: 2017, round: "1er", score: "21,30%" },
+      { year: 2017, round: "2nd", score: "33,90%" },
+      { year: 2022, round: "1er", score: "23,15%" },
+      { year: 2022, round: "2nd", score: "41,45%" },
     ],
   },
   {
@@ -267,6 +295,11 @@ export const candidates: Candidate[] = [
       "Ministre délégué à l'Enseignement professionnel (2000-2002)",
       "Conseiller général de l'Essonne (1985-2004)",
       "Sénateur (2004-2010)",
+    ],
+    previousElections: [
+      { year: 2012, round: "1er", score: "11,10%" },
+      { year: 2017, round: "1er", score: "19,58%" },
+      { year: 2022, round: "1er", score: "21,95%" },
     ],
   },
   {
@@ -383,6 +416,9 @@ export const candidates: Candidate[] = [
     photo:
       "https://upload.wikimedia.org/wikipedia/commons/8/8c/Portrait_d%27%C3%89ric_Zemmour%2C_avril_2022.jpg",
     mandates: [],
+    previousElections: [
+      { year: 2022, round: "1er", score: "7,07%" },
+    ],
   },
   {
     id: "raphael-glucksmann",
@@ -419,6 +455,10 @@ export const candidates: Candidate[] = [
       "Maire de Tulle (2001-2008)",
       "Président du Conseil général de la Corrèze (2008-2012)",
       "Député européen (1999-2000)",
+    ],
+    previousElections: [
+      { year: 2012, round: "1er", score: "28,63%" },
+      { year: 2012, round: "2nd", score: "51,64%" },
     ],
   },
 ];

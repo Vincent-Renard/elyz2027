@@ -69,15 +69,16 @@ export default async function CandidatePage({
               {candidate.name}
             </h1>
             <div className="mt-2 flex flex-wrap justify-center gap-2 sm:justify-start">
-              <span
-                className="rounded-full px-3 py-1 text-sm font-medium"
+              <Link
+                href={`/parti/${candidate.partyShort.toLowerCase()}`}
+                className="rounded-full px-3 py-1 text-sm font-medium transition-opacity hover:opacity-80"
                 style={{
                   backgroundColor: candidate.color + "18",
                   color: candidate.color,
                 }}
               >
                 {candidate.party} ({candidate.partyShort})
-              </span>
+              </Link>
               <span className="rounded-full bg-zinc-100 px-3 py-1 text-sm font-medium text-zinc-500">
                 {statusLabels[candidate.status]}
               </span>
@@ -106,6 +107,26 @@ export default async function CandidatePage({
                   className="rounded-lg border border-zinc-100 bg-zinc-50 px-4 py-3 text-sm text-zinc-700"
                 >
                   {m}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {candidate.previousElections && candidate.previousElections.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+              Historique présidentielle
+            </h2>
+            <ul className="mt-3 grid gap-3 sm:grid-cols-2">
+              {candidate.previousElections.map((e, i) => (
+                <li
+                  key={i}
+                  className="rounded-lg border border-zinc-100 bg-zinc-50 px-4 py-3 text-sm text-zinc-700"
+                >
+                  <span className="font-semibold">{e.year}</span> —{" "}
+                  {e.round} tour —{" "}
+                  <span className="font-bold text-zinc-900">{e.score}</span>
                 </li>
               ))}
             </ul>

@@ -30,6 +30,18 @@ const filterLabels: Record<Filter, string> = {
   possible: "Possibles",
 };
 
+const filterDescriptions: Record<Filter, string> = {
+  all: "",
+  declared:
+    "Candidats ayant officiellement annoncé leur candidature à l'élection présidentielle de 2027.",
+  designated:
+    "Candidats désignés officiellement par leur parti à l'issue d'un vote interne ou d'un congrès.",
+  primary:
+    "Candidats déclarés dans le cadre d'une primaire (notamment la primaire de la gauche du 11 octobre 2026).",
+  possible:
+    "Personnalités pressenties ou pressenties comme candidates, mais n'ayant pas encore officialisé leur candidature.",
+};
+
 function getCandidateArticles(candidateName: string) {
   const nameParts = candidateName.toLowerCase().split(" ");
   return articles.filter((a) =>
@@ -82,6 +94,12 @@ export default function CandidatsPage() {
         ))}
       </div>
 
+      {filter !== "all" && (
+        <p className="-mt-4 mb-8 text-center text-sm text-zinc-400">
+          {filterDescriptions[filter]}
+        </p>
+      )}
+
       <div className="space-y-8">
         {filtered.length === 0 && (
           <p className="py-12 text-center text-zinc-400">
@@ -127,15 +145,16 @@ export default function CandidatsPage() {
                         {candidate.name}
                       </Link>
                     </h2>
-                    <span
-                      className="rounded-full px-2.5 py-0.5 text-xs font-medium"
+                    <Link
+                      href={`/parti/${candidate.partyShort.toLowerCase()}`}
+                      className="rounded-full px-2.5 py-0.5 text-xs font-medium transition-opacity hover:opacity-80"
                       style={{
                         backgroundColor: candidate.color + "18",
                         color: candidate.color,
                       }}
                     >
                       {candidate.partyShort}
-                    </span>
+                    </Link>
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColors[candidate.status]}`}
                     >
