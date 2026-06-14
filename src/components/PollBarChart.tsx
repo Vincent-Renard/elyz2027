@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { polls } from "@/data/polls";
+import { candidates } from "@/data/candidates";
 
 function formatDate(dateStr: string) {
   const [y, m, d] = dateStr.split("-").map(Number);
@@ -7,6 +9,18 @@ function formatDate(dateStr: string) {
     month: "long",
     year: "numeric",
   });
+}
+
+function normalize(name: string) {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function findCandidate(pollName: string) {
+  const normalized = normalize(pollName);
+  return candidates.find((c) => normalize(c.name) === normalized);
 }
 
 export default function PollBarChart() {
@@ -44,25 +58,50 @@ export default function PollBarChart() {
           <ul className="space-y-2">
             {poll.candidates
               .sort((a, b) => b.score - a.score)
-              .map((candidate) => (
-                <li key={candidate.name} className="flex items-center gap-3">
-                  <span className="w-36 truncate text-right text-sm font-medium text-zinc-700">
-                    {candidate.name}
-                  </span>
-                  <span className="w-8 text-right text-xs font-semibold text-zinc-500">
-                    {candidate.score}%
-                  </span>
-                  <div className="h-5 flex-1 rounded-full bg-zinc-100">
-                    <div
-                      className="h-5 rounded-full transition-all"
-                      style={{
-                        width: `${(candidate.score / maxScore) * 100}%`,
-                        backgroundColor: candidate.color,
-                      }}
-                    />
-                  </div>
-                </li>
-              ))}
+              .map((pc) => {
+                const match = findCandidate(pc.name);
+                return (
+                  <li key={pc.name} className="flex items-center gap-3">
+                    <Link
+                      href={match ? `/candidats/${match.id}` : "#"}
+                      className="flex flex-shrink-0 items-center gap-2"
+                    >
+                      {match?.photo ? (
+                        <img
+                          src={match.photo}
+                          alt={pc.name}
+                          className="h-7 w-7 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div
+                          className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                          style={{ backgroundColor: pc.color }}
+                        >
+                          {pc.name.charAt(0)}
+                        </div>
+                      )}
+                    </Link>
+                    <Link
+                      href={match ? `/candidats/${match.id}` : "#"}
+                      className="w-36 truncate text-right text-sm font-medium text-zinc-700 hover:text-elyz-blue hover:underline"
+                    >
+                      {pc.name}
+                    </Link>
+                    <span className="w-8 flex-shrink-0 text-right text-xs font-semibold text-zinc-500">
+                      {pc.score}%
+                    </span>
+                    <div className="h-5 flex-1 rounded-full bg-zinc-100">
+                      <div
+                        className="h-5 rounded-full transition-all"
+                        style={{
+                          width: `${(pc.score / maxScore) * 100}%`,
+                          backgroundColor: pc.color,
+                        }}
+                      />
+                    </div>
+                  </li>
+                );
+              })}
           </ul>
         </div>
       ))}
