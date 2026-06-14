@@ -64,6 +64,12 @@ export default function PollBarChart() {
                   <li key={pc.name} className="flex items-center gap-3">
                     <Link
                       href={match ? `/candidats/${match.id}` : "#"}
+                      className="w-36 truncate text-right text-sm font-medium text-zinc-700 hover:text-elyz-blue hover:underline"
+                    >
+                      {pc.name}
+                    </Link>
+                    <Link
+                      href={match ? `/candidats/${match.id}` : "#"}
                       className="flex flex-shrink-0 items-center gap-2"
                     >
                       {match?.photo ? (
@@ -80,12 +86,6 @@ export default function PollBarChart() {
                           {pc.name.charAt(0)}
                         </div>
                       )}
-                    </Link>
-                    <Link
-                      href={match ? `/candidats/${match.id}` : "#"}
-                      className="w-36 truncate text-right text-sm font-medium text-zinc-700 hover:text-elyz-blue hover:underline"
-                    >
-                      {pc.name}
                     </Link>
                     <span className="w-8 flex-shrink-0 text-right text-xs font-semibold text-zinc-500">
                       {pc.score}%
