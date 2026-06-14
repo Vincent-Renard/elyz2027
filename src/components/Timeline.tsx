@@ -35,6 +35,7 @@ function EventIcon({
       </div>
     );
   }
+
   const baseClass = highlight
     ? "h-12 w-12 ring-4 ring-blue-100"
     : "h-10 w-10 ring-4 ring-white";
@@ -85,32 +86,82 @@ export default function Timeline() {
     );
   }
 
+  const reversed = [...timelineEvents].reverse();
+
   return (
     <div className="relative">
       <div className="absolute left-6 top-0 h-full w-0.5 bg-zinc-200" />
       <ul className="space-y-6">
-        {timelineEvents.map((event) => (
-          <li key={event.id} className="relative flex gap-6">
-            <div className="relative z-10 flex-shrink-0">
-              <EventIcon
-                type={event.type}
-                highlight={event.highlight}
-                candidateId={event.candidateId}
-              />
-            </div>
-            <div className="min-w-0 flex-1 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
-              <time className="text-xs font-medium uppercase tracking-wide text-zinc-400">
-                {formatDate(event.date)}
-              </time>
-              <h3
-                className={`mt-1 text-base font-semibold ${event.highlight ? "text-elyz-blue" : "text-zinc-900"}`}
-              >
-                {event.label}
-              </h3>
-              <p className="mt-1 text-sm text-zinc-500">{event.description}</p>
-            </div>
-          </li>
-        ))}
+        {reversed.map((event) => {
+          const isElection = event.type === "election";
+          const isEvent = event.type === "event";
+          const isCandidate = event.type === "candidature";
+
+          return (
+            <li key={event.id} className="relative flex gap-6">
+              <div className="relative z-10 flex-shrink-0">
+                <EventIcon
+                  type={event.type}
+                  highlight={event.highlight}
+                  candidateId={event.candidateId}
+                />
+              </div>
+
+              {isElection && (
+                <div className="min-w-0 flex-1 rounded-lg border border-blue-200 bg-blue-50 p-4">
+                  <span className="mb-1 inline-block rounded bg-elyz-blue px-2 py-0.5 text-xs font-semibold uppercase text-white">
+                    Scrutin
+                  </span>
+                  <time className="ml-2 text-xs font-medium uppercase tracking-wide text-blue-500">
+                    {formatDate(event.date)}
+                  </time>
+                  <h3 className="mt-1 text-base font-bold text-elyz-blue">
+                    {event.label}
+                  </h3>
+                  <p className="mt-1 text-sm text-blue-700">
+                    {event.description}
+                  </p>
+                </div>
+              )}
+
+              {isEvent && (
+                <div className="min-w-0 flex-1 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+                  <span className="mb-1 inline-block rounded bg-zinc-400 px-2 py-0.5 text-xs font-semibold uppercase text-white">
+                    Événement
+                  </span>
+                  <time className="ml-2 text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    {formatDate(event.date)}
+                  </time>
+                  <h3 className="mt-1 text-base font-semibold text-zinc-900">
+                    {event.label}
+                  </h3>
+                  <p className="mt-1 text-sm text-zinc-500">
+                    {event.description}
+                  </p>
+                </div>
+              )}
+
+              {isCandidate && (
+                <div className="min-w-0 flex-1 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+                  <span className="mb-1 inline-block rounded bg-zinc-100 px-2 py-0.5 text-xs font-semibold uppercase text-zinc-500">
+                    Candidature
+                  </span>
+                  <time className="ml-2 text-xs font-medium uppercase tracking-wide text-zinc-400">
+                    {formatDate(event.date)}
+                  </time>
+                  <h3
+                    className={`mt-1 text-base font-semibold ${event.highlight ? "text-elyz-blue" : "text-zinc-900"}`}
+                  >
+                    {event.label}
+                  </h3>
+                  <p className="mt-1 text-sm text-zinc-500">
+                    {event.description}
+                  </p>
+                </div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
