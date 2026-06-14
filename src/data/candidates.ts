@@ -17,6 +17,7 @@ export interface Candidate {
   photo?: string;
   mandates?: string[];
   previousElections?: PreviousElection[];
+  programUrl?: string;
 }
 
 export const candidates: Candidate[] = [
@@ -61,6 +62,7 @@ export const candidates: Candidate[] = [
       { year: 2017, round: "1er", score: "0,92%" },
       { year: 2022, round: "1er", score: "0,06%" },
     ],
+    programUrl: "https://upr.fr/notre-programme",
   },
   {
     id: "gabriel-attal",
@@ -82,6 +84,7 @@ export const candidates: Candidate[] = [
       "Secrétaire d'État auprès du ministre de l'Éducation (2018-2020)",
       "Député des Hauts-de-Seine (2017-2018, 2024-2026)",
     ],
+    programUrl: "https://gabrielattal.fr/pages/1FEfzGXN5ynz28wiZ1970b/programme",
   },
   {
     id: "clementine-autain",
@@ -101,6 +104,7 @@ export const candidates: Candidate[] = [
       "Conseillère régionale d'Île-de-France (2010-2017)",
       "Conseillère municipale de Paris (2001-2008)",
     ],
+    programUrl: "https://clementine-autain.fr/mon-manifeste/",
   },
   {
     id: "delphine-batho",
@@ -119,6 +123,7 @@ export const candidates: Candidate[] = [
       "Ministre de l'Écologie (2012-2013)",
       "Députée des Deux-Sèvres (2007-2012, 2013-2022)",
     ],
+    programUrl: "https://www.delphinebatho.fr/",
   },
   {
     id: "karim-bouamrane",
@@ -159,6 +164,7 @@ export const candidates: Candidate[] = [
       { year: 2017, round: "1er", score: "4,70%" },
       { year: 2022, round: "1er", score: "2,06%" },
     ],
+    programUrl: "https://www.debout-la-france.fr/actualite/decouvrez-nos-livrets-du-programme-mis-a-jour/",
   },
   {
     id: "jerome-guedj",
@@ -178,6 +184,7 @@ export const candidates: Candidate[] = [
       "Conseiller départemental de l'Essonne (2011-2024)",
       "Président du Conseil départemental de l'Essonne (2011-2017)",
     ],
+    programUrl: "https://www.jerome-guedj.fr/",
   },
   {
     id: "anasse-kazib",
@@ -193,6 +200,7 @@ export const candidates: Candidate[] = [
     photo:
       "https://upload.wikimedia.org/wikipedia/commons/b/b9/Anasse_Kazib%2C_d%C3%A9cembre_2021.jpg",
     mandates: [],
+    programUrl: "https://anasse2027.fr/",
   },
   {
     id: "marine-le-pen",
@@ -259,6 +267,7 @@ export const candidates: Candidate[] = [
       "Président de l'Association des Maires de France (depuis 2021)",
       "Conseiller départemental des Alpes-Maritimes (depuis 2021)",
     ],
+    programUrl: "https://www.unenouvelleenergie.fr/notre-programme/",
   },
   {
     id: "lydie-massard",
@@ -301,6 +310,7 @@ export const candidates: Candidate[] = [
       { year: 2017, round: "1er", score: "19,58%" },
       { year: 2022, round: "1er", score: "21,95%" },
     ],
+    programUrl: "https://melenchon2027.fr/programme2025/livre/",
   },
   {
     id: "edouard-philippe",
@@ -342,6 +352,7 @@ export const candidates: Candidate[] = [
       "Vice-président du Front National (2012-2017)",
       "Conseiller régional du Grand Est (2015-2021)",
     ],
+    programUrl: "https://les-patriotes.fr/wp-content/uploads/2025/09/lespatriotes_projet.pdf",
   },
   {
     id: "bruno-retailleau",
@@ -382,6 +393,7 @@ export const candidates: Candidate[] = [
       "Journaliste et réalisateur",
       "Fondateur du journal Fakir",
     ],
+    programUrl: "https://nouspresident.fr/",
   },
   {
     id: "marine-tondelier",
@@ -401,6 +413,7 @@ export const candidates: Candidate[] = [
       "Conseillère municipale d'Hénin-Beaumont (depuis 2014)",
       "Conseillère régionale des Hauts-de-France (2021-2022)",
     ],
+    programUrl: "https://marinetondelier.fr/manifeste",
   },
   {
     id: "eric-zemmour",

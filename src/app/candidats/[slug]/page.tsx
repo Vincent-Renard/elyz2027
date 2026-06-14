@@ -1,5 +1,6 @@
 import { candidates } from "@/data/candidates";
 import { articles } from "@/data/articles";
+import { polls } from "@/data/polls";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -136,6 +137,52 @@ export default async function CandidatePage({
           </div>
         )}
 
+        {(() => {
+          const candidatePolls = polls
+            .map((p) => {
+              const pc = p.candidates.find(
+                (c) => c.name.toLowerCase().includes(candidate.name.split(" ")[0].toLowerCase()),
+              );
+              return pc ? { source: p.source, date: p.date, score: pc.score } : null;
+            })
+            .filter(Boolean);
+
+          if (candidatePolls.length === 0) return null;
+
+          if (candidatePolls.length === 0) return null;
+
+          const maxScore = Math.max(...candidatePolls.map((p) => p!.score));
+
+          return (
+            <div className="mt-8">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+                Sondages
+              </h2>
+              <div className="mt-3 space-y-2">
+                {candidatePolls.map((p) => {
+                  const w = maxScore > 0 ? (p!.score / maxScore) * 100 : 0;
+                  return (
+                    <div key={p!.date + p!.source} className="flex items-center gap-3">
+                      <span className="w-8 flex-shrink-0 text-right text-xs font-semibold text-zinc-500">
+                        {p!.score}%
+                      </span>
+                      <div className="h-4 flex-1 rounded-full bg-zinc-100">
+                        <div
+                          className="h-4 rounded-full transition-all"
+                          style={{ width: `${w}%`, backgroundColor: candidate.color }}
+                        />
+                      </div>
+                      <span className="w-28 text-right text-[10px] text-zinc-400">
+                        {p!.source.split("/")[0].trim()}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })()}
+
         {candidateArticles.length > 0 && (
           <div className="mt-8">
             <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
@@ -159,6 +206,34 @@ export default async function CandidatePage({
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {candidate.programUrl ? (
+          <div className="mt-8">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+              Programme
+            </h2>
+            <a
+              href={candidate.programUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-elyz-blue px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            >
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Voir le programme
+            </a>
+          </div>
+        ) : (
+          <div className="mt-8">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
+              Programme
+            </h2>
+            <p className="mt-2 text-sm italic text-zinc-400">
+              Aucun programme publié pour le moment.
+            </p>
           </div>
         )}
 
