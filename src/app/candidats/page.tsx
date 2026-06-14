@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { candidates } from "@/data/candidates";
 import { articles } from "@/data/articles";
 import Link from "next/link";
@@ -16,6 +19,17 @@ const statusColors: Record<string, string> = {
   possible: "bg-zinc-100 text-zinc-500",
 };
 
+const filterOrder = ["all", "declared", "designated", "primary", "possible"] as const;
+type Filter = (typeof filterOrder)[number];
+
+const filterLabels: Record<Filter, string> = {
+  all: "Tous",
+  declared: "Déclarés",
+  designated: "Désignés",
+  primary: "Primaire",
+  possible: "Possibles",
+};
+
 function getCandidateArticles(candidateName: string) {
   const nameParts = candidateName.toLowerCase().split(" ");
   return articles.filter((a) =>
@@ -24,10 +38,15 @@ function getCandidateArticles(candidateName: string) {
 }
 
 export default function CandidatsPage() {
+  const [filter, setFilter] = useState<Filter>("all");
+
   const sorted = [...candidates].sort((a, b) => {
     const order = ["declared", "designated", "primary", "possible"];
     return order.indexOf(a.status) - order.indexOf(b.status);
   });
+
+  const filtered =
+    filter === "all" ? sorted : sorted.filter((c) => c.status === filter);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -42,8 +61,34 @@ export default function CandidatsPage() {
         </p>
       </div>
 
+      <div className="mb-8 flex flex-wrap justify-center gap-2">
+        {filterOrder.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+              filter === f
+                ? "bg-elyz-blue text-white"
+                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+            }`}
+          >
+            {filterLabels[f]}
+            {f !== "all" && (
+              <span className="ml-1 opacity-70">
+                ({candidates.filter((c) => c.status === f).length})
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
       <div className="space-y-8">
-        {sorted.map((candidate) => {
+        {filtered.length === 0 && (
+          <p className="py-12 text-center text-zinc-400">
+            Aucun candidat avec ce statut.
+          </p>
+        )}
+        {filtered.map((candidate) => {
           const candidateArticles = getCandidateArticles(candidate.name);
           return (
             <div
