@@ -1,4 +1,5 @@
 import PollBarChart from "@/components/PollBarChart";
+import EvolutionChart from "@/components/EvolutionChart";
 import Link from "next/link";
 
 export default function SondagesPage() {
@@ -26,6 +27,10 @@ export default function SondagesPage() {
         </Link>
         .
       </p>
+
+      <div className="mb-10">
+        <EvolutionChart />
+      </div>
 
       <PollBarChart />
     </div>

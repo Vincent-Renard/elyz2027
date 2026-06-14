@@ -95,6 +95,7 @@ export default function Timeline() {
   }
 
   const reversed = [...timelineEvents].reverse();
+  const today = new Date();
 
   return (
     <div className="relative">
@@ -105,8 +106,12 @@ export default function Timeline() {
           const isEvent = event.type === "event";
           const isCandidate = event.type === "candidature";
 
+          const [y, m, d] = event.date.split("-").map(Number);
+          const eventDate = new Date(y, m - 1, d);
+          const isFuture = eventDate > today;
+
           return (
-            <li key={event.id} className="relative flex gap-6">
+            <li key={event.id} className={`relative flex gap-6 ${isFuture ? "opacity-40" : ""}`}>
               <div className="relative z-10 flex-shrink-0">
                 <EventIcon
                   type={event.type}
