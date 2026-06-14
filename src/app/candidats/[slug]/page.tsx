@@ -2,6 +2,7 @@ import { candidates } from "@/data/candidates";
 import { articles } from "@/data/articles";
 import { polls } from "@/data/polls";
 import { agendaEvents } from "@/data/agenda";
+import AgendaSection from "@/components/AgendaSection";
 import ProgramSection from "@/components/ProgramSection";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -216,57 +217,7 @@ export default async function CandidatePage({
             .filter((e) => e.candidateId === candidate.id)
             .sort((a, b) => a.date.localeCompare(b.date));
 
-          if (candidateAgenda.length === 0) return null;
-
-          const typeLabels = {
-            meeting: { label: "Meeting", class: "bg-amber-100 text-amber-700" },
-            conference: { label: "Conférence", class: "bg-purple-100 text-purple-700" },
-            media: { label: "Média", class: "bg-blue-100 text-blue-700" },
-          };
-
-          return (
-            <div className="mt-8">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-400">
-                Agenda
-              </h2>
-              <ul className="mt-3 space-y-3">
-                {candidateAgenda.map((e) => {
-                  const t = typeLabels[e.type];
-                  const isPast = new Date(e.date) < new Date();
-                  return (
-                    <li
-                      key={e.id}
-                      className={`rounded-lg border border-zinc-100 p-4 ${isPast ? "opacity-50" : ""}`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <span className={`rounded px-2 py-0.5 text-[10px] font-semibold uppercase ${t.class}`}>
-                          {t.label}
-                        </span>
-                        <span className={`text-xs ${isPast ? "text-zinc-300" : "text-zinc-400"}`}>
-                          {formatDate(e.date)}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-sm font-medium text-zinc-900">{e.label}</p>
-                      <p className="mt-0.5 text-xs text-zinc-500">{e.description}</p>
-                      {e.location && (
-                        <p className="mt-1 text-xs text-zinc-400">📍 {e.location}</p>
-                      )}
-                      {e.url && (
-                        <a
-                          href={e.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="mt-1 inline-block text-xs text-elyz-blue underline underline-offset-2"
-                        >
-                          En savoir plus
-                        </a>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          );
+          return <AgendaSection events={candidateAgenda} />;
         })()}
 
         <ProgramSection candidateId={candidate.id} programUrl={candidate.programUrl} />
