@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { timelineEvents } from "@/data/timeline";
 import { candidates } from "@/data/candidates";
@@ -96,12 +99,35 @@ export default function Timeline() {
 
   const reversed = [...timelineEvents].reverse();
   const today = new Date();
+  const [showFuture, setShowFuture] = useState(false);
+
+  const filtered = showFuture
+    ? reversed
+    : reversed.filter((event) => {
+        const [y, m, d] = event.date.split("-").map(Number);
+        return new Date(y, m - 1, d) <= today;
+      });
 
   return (
     <div className="relative">
+      <div className="mb-6 flex items-center justify-end gap-2">
+        <span className="text-xs text-zinc-400">Afficher les événements futurs</span>
+        <button
+          onClick={() => setShowFuture(!showFuture)}
+          className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+            showFuture ? "bg-elyz-blue" : "bg-zinc-300"
+          }`}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
+              showFuture ? "translate-x-4" : "translate-x-0.5"
+            }`}
+          />
+        </button>
+      </div>
       <div className="absolute left-6 top-0 h-full w-0.5 bg-zinc-200" />
       <ul className="space-y-6">
-        {reversed.map((event) => {
+        {filtered.map((event) => {
           const isElection = event.type === "election";
           const isEvent = event.type === "event";
           const isCandidate = event.type === "candidature";
