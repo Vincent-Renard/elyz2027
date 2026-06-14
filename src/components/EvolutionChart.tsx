@@ -79,9 +79,9 @@ export default function EvolutionChart() {
                     <g key={s.pollId}>
                       <circle cx={x} cy={y} r={5} fill={c.color} stroke="white" strokeWidth={2} />
                       <text
-                        x={x + 10}
-                        y={y + 4}
-                        textAnchor="start"
+                        x={x}
+                        y={y - 14}
+                        textAnchor="middle"
                         className="text-[10px] fill-zinc-500"
                       >
                         {s.score}%
