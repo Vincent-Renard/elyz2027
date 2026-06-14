@@ -20,6 +20,21 @@ function EventIcon({
   highlight?: boolean;
   candidateId?: string;
 }) {
+  const candidate = candidates.find((c) => c.id === candidateId);
+
+  if (type === "candidature" && candidate?.photo) {
+    return (
+      <div
+        className={`flex-shrink-0 ${highlight ? "h-12 w-12 ring-4 ring-blue-100" : "h-10 w-10 ring-4 ring-white"} overflow-hidden rounded-full`}
+      >
+        <img
+          src={candidate.photo}
+          alt={candidate.name}
+          className="h-full w-full object-cover"
+        />
+      </div>
+    );
+  }
   const baseClass = highlight
     ? "h-12 w-12 ring-4 ring-blue-100"
     : "h-10 w-10 ring-4 ring-white";
@@ -48,7 +63,6 @@ function EventIcon({
     );
   }
 
-  const candidate = candidates.find((c) => c.id === candidateId);
   const color = candidate?.color ?? "#6b7280";
   return (
     <div
