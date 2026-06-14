@@ -98,7 +98,7 @@ export default function CandidatsPage() {
                     </span>
                   </div>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-600">
-                    {candidate.party} — {candidate.description}
+                    {candidate.description}
                   </p>
 
                   {candidate.mandates && candidate.mandates.length > 0 && (
