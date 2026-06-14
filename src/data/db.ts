@@ -1,77 +1,83 @@
+import { MongoClient, type Db } from "mongodb";
 import { candidates as staticCandidates } from "./candidates";
 import { parties as staticParties } from "./parties";
 import { articles as staticArticles } from "./articles";
 import { polls as staticPolls } from "./polls";
 import { timelineEvents as staticTimeline } from "./timeline";
 
-type DbStatus = "mongodb" | "static";
+const MONGO_URL = process.env.DATABASE_URL || "mongodb://localhost:27017/elyz2027";
 
-let status: DbStatus = "static";
+let client: MongoClient | null = null;
+let db: Db | null = null;
+let status: "mongodb" | "static" = "static";
 let ready = false;
 
-async function initMongo() {
+function getDbName(url: string) {
+  const match = url.match(/\/([^/?]+)(\?|$)/);
+  return match?.[1] ?? "elyz2027";
+}
+
+async function connect() {
   try {
-    const { PrismaClient } = await import("../generated/prisma/client");
-    const client = new PrismaClient();
-    await client.$connect();
-    const count = await client.candidate.count();
+    client = new MongoClient(MONGO_URL);
+    await client.connect();
+    const dbName = getDbName(MONGO_URL);
+    db = client.db(dbName);
+    const count = await db.collection("Candidate").countDocuments();
     if (count === 0) {
       console.warn("MongoDB connected but empty. Run seed first.");
-      return null;
+      client.close();
+      client = null;
+      db = null;
+      return;
     }
+    status = "mongodb";
     console.log(`MongoDB connected: ${count} candidates found.`);
-    return client;
-  } catch {
-    console.warn("MongoDB unavailable, using static data.");
-    return null;
+  } catch (e) {
+    console.warn("MongoDB unavailable, using static data.", (e as Error).message);
+    client = null;
+    db = null;
   }
 }
 
-let mongoClient: any = null;
-
-export async function getDb() {
+async function init() {
   if (!ready) {
-    mongoClient = await initMongo();
-    status = mongoClient ? "mongodb" : "static";
+    await connect();
     ready = true;
   }
-  return { client: mongoClient, status };
+  return { db, status };
 }
 
 export async function getCandidates() {
-  const { client } = await getDb();
-  if (client) {
-    return client.candidate.findMany({
-      include: { previousElections: true },
-      orderBy: { name: "asc" },
-    });
+  const { db } = await init();
+  if (db) {
+    return db.collection("Candidate").find().sort({ name: 1 }).toArray();
   }
   return staticCandidates;
 }
 
 export async function getCandidateById(id: string) {
-  const { client } = await getDb();
-  if (client) {
-    return client.candidate.findUnique({
-      where: { id },
-      include: { previousElections: true },
-    });
+  const { db } = await init();
+  if (db) {
+    return db.collection("Candidate").findOne({ id });
   }
   return staticCandidates.find((c) => c.id === id) ?? null;
 }
 
 export async function getParties() {
-  const { client } = await getDb();
-  if (client) {
-    return client.party.findMany({ orderBy: { name: "asc" } });
+  const { db } = await init();
+  if (db) {
+    return db.collection("Party").find().sort({ name: 1 }).toArray();
   }
   return Object.values(staticParties);
 }
 
 export async function getPartyByShortName(shortName: string) {
-  const { client } = await getDb();
-  if (client) {
-    return client.party.findUnique({ where: { shortName } });
+  const { db } = await init();
+  if (db) {
+    return db
+      .collection("Party")
+      .findOne({ shortName: { $regex: new RegExp(`^${shortName}$`, "i") } });
   }
   return Object.values(staticParties).find(
     (p) => p.shortName.toLowerCase() === shortName.toLowerCase(),
@@ -79,28 +85,25 @@ export async function getPartyByShortName(shortName: string) {
 }
 
 export async function getArticles() {
-  const { client } = await getDb();
-  if (client) {
-    return client.article.findMany({ orderBy: { date: "desc" } });
+  const { db } = await init();
+  if (db) {
+    return db.collection("Article").find().sort({ date: -1 }).toArray();
   }
   return staticArticles;
 }
 
 export async function getPolls() {
-  const { client } = await getDb();
-  if (client) {
-    return client.poll.findMany({
-      include: { candidates: true },
-      orderBy: { date: "desc" },
-    });
+  const { db } = await init();
+  if (db) {
+    return db.collection("Poll").find().sort({ date: -1 }).toArray();
   }
   return staticPolls;
 }
 
 export async function getTimelineEvents() {
-  const { client } = await getDb();
-  if (client) {
-    return client.timelineEvent.findMany({ orderBy: { date: "asc" } });
+  const { db } = await init();
+  if (db) {
+    return db.collection("TimelineEvent").find().sort({ date: 1 }).toArray();
   }
   return staticTimeline;
 }

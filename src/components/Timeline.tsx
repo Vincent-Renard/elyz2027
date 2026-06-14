@@ -151,7 +151,12 @@ export default function Timeline() {
               )}
 
               {isCandidate && (
-                <div className="min-w-0 flex-1 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm">
+                <div
+                  className="min-w-0 flex-1 rounded-lg border border-zinc-200 bg-white p-4 shadow-sm"
+                  style={{
+                    borderLeft: `4px solid ${candidates.find((c) => c.id === event.candidateId)?.color ?? "#6b7280"}`,
+                  }}
+                >
                   <span className="mb-1 inline-block rounded bg-zinc-100 px-2 py-0.5 text-xs font-semibold uppercase text-zinc-500">
                     Candidature
                   </span>

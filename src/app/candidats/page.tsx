@@ -112,6 +112,7 @@ export default function CandidatsPage() {
             <div
               key={candidate.id}
               className="rounded-xl border border-zinc-200 bg-white shadow-sm"
+              style={{ borderLeft: `5px solid ${candidate.color}` }}
             >
               <div className="flex flex-col gap-6 p-6 sm:flex-row">
                 <Link

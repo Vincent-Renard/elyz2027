@@ -46,7 +46,10 @@ export default async function CandidatePage({
         Retour aux candidats
       </Link>
 
-      <div className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
+      <div
+        className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm"
+        style={{ borderTop: `5px solid ${candidate.color}` }}
+      >
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           {candidate.photo ? (
             <img

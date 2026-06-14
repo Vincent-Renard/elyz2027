@@ -1,97 +1,55 @@
-import { PrismaClient } from "../src/generated/prisma/client.js";
+import { MongoClient } from "mongodb";
 import { candidates } from "../src/data/candidates";
 import { parties } from "../src/data/parties";
 import { articles } from "../src/data/articles";
 import { polls } from "../src/data/polls";
 import { timelineEvents } from "../src/data/timeline";
 
-const prisma = new PrismaClient();
+const url = process.env.DATABASE_URL || "mongodb://localhost:27017/elyz2027";
 
 async function main() {
+  const client = new MongoClient(url);
+  await client.connect();
+  const dbName = url.match(/\/([^/?]+)(\?|$)/)?.[1] ?? "elyz2027";
+  const db = client.db(dbName);
+
   console.log("Seeding database...");
 
-  await prisma.candidate.deleteMany();
-  await prisma.party.deleteMany();
-  await prisma.article.deleteMany();
-  await prisma.poll.deleteMany();
-  await prisma.timelineEvent.deleteMany();
-
-  for (const candidate of candidates) {
-    await prisma.candidate.create({
-      data: {
-        name: candidate.name,
-        party: candidate.party,
-        partyShort: candidate.partyShort,
-        color: candidate.color,
-        announcedDate: candidate.announcedDate,
-        status: candidate.status,
-        description: candidate.description,
-        source: candidate.source,
-        photo: candidate.photo ?? null,
-        mandates: candidate.mandates ?? [],
-        previousElections: {
-          create:
-            candidate.previousElections?.map((e) => ({
-              year: e.year,
-              round: e.round,
-              score: e.score,
-            })) ?? [],
-        },
-      },
+  await db.collection("Candidate").deleteMany({});
+  for (const c of candidates) {
+    const { previousElections, ...rest } = c as any;
+    await db.collection("Candidate").insertOne({
+      ...rest,
+      previousElections: previousElections ?? [],
     });
   }
+  console.log(`  ${candidates.length} candidates inserted.`);
 
-  for (const party of Object.values(parties)) {
-    await prisma.party.create({
-      data: {
-        shortName: party.shortName,
-        name: party.name,
-        color: party.color,
-        logo: party.logo ?? null,
-        founded: party.founded,
-        position: party.position,
-        description: party.description,
-        history: party.history,
-        leader: party.leader,
-      },
-    });
+  await db.collection("Party").deleteMany({});
+  for (const p of Object.values(parties)) {
+    await db.collection("Party").insertOne(p);
   }
+  console.log(`  ${Object.values(parties).length} parties inserted.`);
 
-  for (const article of articles) {
-    await prisma.article.create({ data: article });
+  await db.collection("Article").deleteMany({});
+  await db.collection("Article").insertMany(articles);
+  console.log(`  ${articles.length} articles inserted.`);
+
+  await db.collection("Poll").deleteMany({});
+  for (const p of polls) {
+    await db.collection("Poll").insertOne(p);
   }
+  console.log(`  ${polls.length} polls inserted.`);
 
-  for (const poll of polls) {
-    await prisma.poll.create({
-      data: {
-        source: poll.source,
-        date: poll.date,
-        sampleSize: poll.sampleSize,
-        url: poll.url,
-        candidates: {
-          create: poll.candidates.map((c) => ({
-            name: c.name,
-            partyShort: c.partyShort,
-            score: c.score,
-            color: c.color,
-          })),
-        },
-      },
-    });
-  }
+  await db.collection("TimelineEvent").deleteMany({});
+  await db.collection("TimelineEvent").insertMany(timelineEvents);
+  console.log(`  ${timelineEvents.length} timeline events inserted.`);
 
-  for (const event of timelineEvents) {
-    await prisma.timelineEvent.create({ data: event });
-  }
-
+  await client.close();
   console.log("Database seeded successfully!");
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

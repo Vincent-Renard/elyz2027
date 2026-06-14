@@ -31,7 +31,10 @@ export default async function PartyPage({
         Retour aux candidats
       </Link>
 
-      <div className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm">
+      <div
+        className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm"
+        style={{ borderTop: `5px solid ${party.color}` }}
+      >
         <div className="flex flex-col items-center gap-6 sm:flex-row">
           {party.logo ? (
             <img
