@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { candidates } from "@/data/candidates";
-import { articles } from "@/data/articles";
 import Link from "next/link";
 
 const statusLabels: Record<string, string> = {
@@ -41,13 +40,6 @@ const filterDescriptions: Record<Filter, string> = {
   possible:
     "Personnalités pressenties ou pressenties comme candidates, mais n'ayant pas encore officialisé leur candidature.",
 };
-
-function getCandidateArticles(candidateName: string) {
-  const nameParts = candidateName.toLowerCase().split(" ");
-  return articles.filter((a) =>
-    nameParts.some((part) => part.length > 3 && a.title.toLowerCase().includes(part)),
-  );
-}
 
 export default function CandidatsPage() {
   const [filter, setFilter] = useState<Filter>("all");
@@ -106,9 +98,7 @@ export default function CandidatsPage() {
             Aucun candidat avec ce statut.
           </p>
         )}
-        {filtered.map((candidate) => {
-          const candidateArticles = getCandidateArticles(candidate.name);
-          return (
+        {filtered.map((candidate) => (
             <div
               key={candidate.id}
               className="rounded-xl border border-zinc-200 bg-white shadow-sm"
@@ -165,49 +155,11 @@ export default function CandidatsPage() {
                   <p className="mt-2 text-sm leading-relaxed text-zinc-600">
                     {candidate.description}
                   </p>
-
-                  {candidate.mandates && candidate.mandates.length > 0 && (
-                    <div className="mt-3">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                        Mandats
-                      </h3>
-                      <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1">
-                        {candidate.mandates.map((m) => (
-                          <li
-                            key={m}
-                            className="text-sm text-zinc-500 before:mr-2 before:text-zinc-300 before:content-['·']"
-                          >
-                            {m}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {candidateArticles.length > 0 && (
-                    <div className="mt-3">
-                      <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-                        Actualités liées
-                      </h3>
-                      <ul className="mt-1 space-y-1">
-                        {candidateArticles.slice(0, 3).map((a) => (
-                          <li key={a.id}>
-                            <Link
-                              href={a.url}
-                              className="text-sm text-elyz-blue underline underline-offset-2 hover:text-blue-800"
-                            >
-                              {a.source} &mdash; {a.title}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
-          );
-        })}
+          ))
+        }
       </div>
     </div>
   );
