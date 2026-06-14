@@ -52,7 +52,14 @@ export default function PollBarChart() {
         >
           <div className="mb-1 flex items-baseline justify-between">
             <h2 className="text-lg font-semibold text-zinc-900">
-              {poll.source}
+              <Link
+                href={poll.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-elyz-blue hover:underline"
+              >
+                {poll.source}
+              </Link>
             </h2>
             <span className="text-sm text-zinc-400">
               n={poll.sampleSize.toLocaleString("fr-FR")}
