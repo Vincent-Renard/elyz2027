@@ -26,6 +26,14 @@ export default function Navbar() {
           </li>
           <li>
             <Link
+              href="/sujets"
+              className="transition-colors hover:text-elyz-blue"
+            >
+              Sujets
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/sondages"
               className="transition-colors hover:text-elyz-blue"
             >
