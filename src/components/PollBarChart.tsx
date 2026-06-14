@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { polls } from "@/data/polls";
 import { candidates } from "@/data/candidates";
+import { parties } from "@/data/parties";
 
 function formatDate(dateStr: string) {
   const [y, m, d] = dateStr.split("-").map(Number);
@@ -21,6 +22,12 @@ function normalize(name: string) {
 function findCandidate(pollName: string) {
   const normalized = normalize(pollName);
   return candidates.find((c) => normalize(c.name) === normalized);
+}
+
+function partyColor(short: string) {
+  return Object.values(parties).find(
+    (p) => p.shortName === short,
+  )?.color;
 }
 
 export default function PollBarChart() {
@@ -60,8 +67,13 @@ export default function PollBarChart() {
               .sort((a, b) => b.score - a.score)
               .map((pc) => {
                 const match = findCandidate(pc.name);
+                const color = partyColor(pc.partyShort) || pc.color;
                 return (
-                  <li key={pc.name} className="flex items-center gap-3">
+                  <li
+                    key={pc.name}
+                    className="flex items-center gap-3 border-l-4 pl-3"
+                    style={{ borderColor: color }}
+                  >
                     <Link
                       href={match ? `/candidats/${match.id}` : "#"}
                       className="w-36 truncate text-right text-sm font-medium text-zinc-700 hover:text-elyz-blue hover:underline"
@@ -81,7 +93,7 @@ export default function PollBarChart() {
                       ) : (
                         <div
                           className="flex h-7 w-7 items-center justify-center rounded-full text-[10px] font-bold text-white"
-                          style={{ backgroundColor: pc.color }}
+                          style={{ backgroundColor: color }}
                         >
                           {pc.name.charAt(0)}
                         </div>
@@ -95,7 +107,7 @@ export default function PollBarChart() {
                         className="h-5 rounded-full transition-all"
                         style={{
                           width: `${(pc.score / maxScore) * 100}%`,
-                          backgroundColor: pc.color,
+                          backgroundColor: color,
                         }}
                       />
                     </div>
