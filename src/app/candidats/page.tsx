@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { candidates } from "@/data/candidates";
 import Link from "next/link";
+import { useLocale } from "@/lib/locale";
 
 const statusLabels: Record<string, string> = {
-  declared: "Déclaré",
-  primary: "Primaire",
-  designated: "Désigné",
-  possible: "Possible",
+  declared: "candidates.statusDeclared",
+  primary: "candidates.statusPrimary",
+  designated: "candidates.statusDesignated",
+  possible: "candidates.statusPossible",
 };
 
 const statusColors: Record<string, string> = {
@@ -22,26 +23,23 @@ const filterOrder = ["all", "declared", "designated", "primary", "possible"] as 
 type Filter = (typeof filterOrder)[number];
 
 const filterLabels: Record<Filter, string> = {
-  all: "Tous",
-  declared: "Déclarés",
-  designated: "Désignés",
-  primary: "Primaire",
-  possible: "Possibles",
+  all: "candidates.all",
+  declared: "candidates.declared",
+  designated: "candidates.designated",
+  primary: "candidates.primary",
+  possible: "candidates.possible",
 };
 
 const filterDescriptions: Record<Filter, string> = {
   all: "",
-  declared:
-    "Candidats ayant officiellement annoncé leur candidature à l'élection présidentielle de 2027.",
-  designated:
-    "Candidats désignés officiellement par leur parti à l'issue d'un vote interne ou d'un congrès.",
-  primary:
-    "Candidats déclarés dans le cadre d'une primaire (notamment la primaire de la gauche du 11 octobre 2026).",
-  possible:
-    "Personnalités pressenties ou pressenties comme candidates, mais n'ayant pas encore officialisé leur candidature.",
+  declared: "candidates.filterDeclared",
+  designated: "candidates.filterDesignated",
+  primary: "candidates.filterPrimary",
+  possible: "candidates.filterPossible",
 };
 
 export default function CandidatsPage() {
+  const { t } = useLocale();
   const [filter, setFilter] = useState<Filter>("all");
 
   const sorted = [...candidates].sort((a, b) => {
@@ -56,12 +54,13 @@ export default function CandidatsPage() {
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-10 text-center">
         <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
-          Candidats <span className="text-elyz-blue">2027</span>
+          {t("candidates.title")}
         </h1>
         <p className="mt-2 text-zinc-500">
-          {candidates.filter((c) => c.status !== "possible").length} candidats
-          déclarés · {candidates.filter((c) => c.status === "possible").length}{" "}
-          candidats possibles
+          {candidates.filter((c) => c.status !== "possible").length}{" "}
+          {t("candidates.declared").toLowerCase()} ·{" "}
+          {candidates.filter((c) => c.status === "possible").length}{" "}
+          {t("candidates.possible").toLowerCase()}
         </p>
       </div>
 
@@ -76,7 +75,7 @@ export default function CandidatsPage() {
                 : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
             }`}
           >
-            {filterLabels[f]}
+            {t(filterLabels[f])}
             {f !== "all" && (
               <span className="ml-1 opacity-70">
                 ({candidates.filter((c) => c.status === f).length})
@@ -88,14 +87,14 @@ export default function CandidatsPage() {
 
       {filter !== "all" && (
         <p className="-mt-4 mb-8 text-center text-sm text-zinc-400">
-          {filterDescriptions[filter]}
+          {t(filterDescriptions[filter])}
         </p>
       )}
 
       <div className="space-y-8">
         {filtered.length === 0 && (
           <p className="py-12 text-center text-zinc-400">
-            Aucun candidat avec ce statut.
+            {t("candidates.none")}
           </p>
         )}
         {filtered.map((candidate) => (
@@ -149,7 +148,7 @@ export default function CandidatsPage() {
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColors[candidate.status]}`}
                     >
-                      {statusLabels[candidate.status]}
+                      {t(statusLabels[candidate.status])}
                     </span>
                   </div>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-600">

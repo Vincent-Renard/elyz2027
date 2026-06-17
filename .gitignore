@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# collected media data
+/src/data/collected/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma

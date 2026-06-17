@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:seed": "npx tsx prisma/seed.ts"
+    "db:seed": "npx tsx prisma/seed.ts",
+    "media:fetch": "npx tsx scripts/fetch-media.ts",
+    "programs:fetch": "npx tsx scripts/fetch-programs.ts"
   },
   "dependencies": {
     "@prisma/client": "^7.8.0",

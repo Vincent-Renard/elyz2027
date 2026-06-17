@@ -4,6 +4,25 @@ export interface PreviousElection {
   score: string;
 }
 
+export interface SocialMedia {
+  twitter?: string;
+  instagram?: string;
+  facebook?: string;
+  youtube?: string;
+  tiktok?: string;
+  telegram?: string;
+  threads?: string;
+  linkedin?: string;
+  bluesky?: string;
+}
+
+export interface CampaignTeam {
+  director?: string;
+  coDirectors?: string[];
+  spokesperson?: string;
+  advisors?: string[];
+}
+
 export interface Candidate {
   id: string;
   name: string;
@@ -18,6 +37,8 @@ export interface Candidate {
   mandates?: string[];
   previousElections?: PreviousElection[];
   programUrl?: string;
+  socialMedia?: SocialMedia;
+  campaignTeam?: CampaignTeam;
 }
 
 export const candidates: Candidate[] = [
@@ -40,6 +61,9 @@ export const candidates: Candidate[] = [
       { year: 2017, round: "1er", score: "0,64%" },
       { year: 2022, round: "1er", score: "0,56%" },
     ],
+    socialMedia: {
+      twitter: "https://x.com/nathaliearthaud",
+    },
   },
   {
     id: "francois-asselineau",
@@ -63,6 +87,10 @@ export const candidates: Candidate[] = [
       { year: 2022, round: "1er", score: "0,06%" },
     ],
     programUrl: "https://upr.fr/notre-programme",
+    socialMedia: {
+      twitter: "https://x.com/asso_francois",
+      youtube: "https://youtube.com/@FrancoisAsselineau",
+    },
   },
   {
     id: "gabriel-attal",
@@ -85,6 +113,15 @@ export const candidates: Candidate[] = [
       "Député des Hauts-de-Seine (2017-2018, 2024-2026)",
     ],
     programUrl: "https://gabrielattal.fr/pages/1FEfzGXN5ynz28wiZ1970b/programme",
+    socialMedia: {
+      twitter: "https://x.com/GabrielAttal",
+      instagram: "https://instagram.com/gabrielattal",
+      facebook: "https://facebook.com/gabrielattal",
+    },
+    campaignTeam: {
+      director: "Anne-Sophie Hervieu",
+      spokesperson: "Pierre-Henri Dumont",
+    },
   },
   {
     id: "clementine-autain",
@@ -105,6 +142,10 @@ export const candidates: Candidate[] = [
       "Conseillère municipale de Paris (2001-2008)",
     ],
     programUrl: "https://clementine-autain.fr/mon-manifeste/",
+    socialMedia: {
+      twitter: "https://x.com/ClemAutain",
+      instagram: "https://instagram.com/clemenceautain",
+    },
   },
   {
     id: "delphine-batho",
@@ -124,6 +165,10 @@ export const candidates: Candidate[] = [
       "Députée des Deux-Sèvres (2007-2012, 2013-2022)",
     ],
     programUrl: "https://www.delphinebatho.fr/",
+    socialMedia: {
+      twitter: "https://x.com/delphinebatho",
+      instagram: "https://instagram.com/delphinebatho",
+    },
   },
   {
     id: "karim-bouamrane",
@@ -140,6 +185,10 @@ export const candidates: Candidate[] = [
       "Maire de Saint-Ouen (depuis 2014)",
       "Conseiller départemental de Seine-Saint-Denis (depuis 2015)",
     ],
+    socialMedia: {
+      twitter: "https://x.com/KarimBouamrane",
+      instagram: "https://instagram.com/karimbouamrane",
+    },
   },
   {
     id: "nicolas-dupont-aignan",
@@ -165,6 +214,10 @@ export const candidates: Candidate[] = [
       { year: 2022, round: "1er", score: "2,06%" },
     ],
     programUrl: "https://www.debout-la-france.fr/actualite/decouvrez-nos-livrets-du-programme-mis-a-jour/",
+    socialMedia: {
+      twitter: "https://x.com/NDupontAignan",
+      youtube: "https://youtube.com/@nicolasdupontaignan",
+    },
   },
   {
     id: "jerome-guedj",
@@ -185,6 +238,9 @@ export const candidates: Candidate[] = [
       "Président du Conseil départemental de l'Essonne (2011-2017)",
     ],
     programUrl: "https://www.jerome-guedj.fr/",
+    socialMedia: {
+      twitter: "https://x.com/jeromeguedj",
+    },
   },
   {
     id: "anasse-kazib",
@@ -201,6 +257,9 @@ export const candidates: Candidate[] = [
       "https://upload.wikimedia.org/wikipedia/commons/b/b9/Anasse_Kazib%2C_d%C3%A9cembre_2021.jpg",
     mandates: [],
     programUrl: "https://anasse2027.fr/",
+    socialMedia: {
+      twitter: "https://x.com/AnasseKazib",
+    },
   },
   {
     id: "marine-le-pen",
@@ -229,9 +288,25 @@ export const candidates: Candidate[] = [
       { year: 2022, round: "1er", score: "23,15%" },
       { year: 2022, round: "2nd", score: "41,45%" },
     ],
+    socialMedia: {
+      twitter: "https://x.com/MLP_officiel",
+      instagram: "https://instagram.com/marine_lepen",
+      facebook: "https://facebook.com/marinelenpen",
+      tiktok: "https://tiktok.com/@marine_lepen",
+      telegram: "https://t.me/marinelepen",
+      youtube: "https://youtube.com/@MarineLePenOfficiel",
+    },
+    campaignTeam: {
+      director: "Julien Sanchez",
+      advisors: ["Philippe Olivier"],
+    },
   },
   {
     id: "jordan-bardella",
+    campaignTeam: {
+      director: "Julien Sanchez",
+      advisors: ["Philippe Olivier"],
+    },
     name: "Jordan Bardella",
     party: "Rassemblement National",
     partyShort: "RN",
@@ -248,6 +323,12 @@ export const candidates: Candidate[] = [
       "Président du Rassemblement National (depuis 2022)",
       "Conseiller régional d'Île-de-France (2015-2020)",
     ],
+    socialMedia: {
+      twitter: "https://x.com/jbardella",
+      instagram: "https://instagram.com/jordanbardella",
+      tiktok: "https://tiktok.com/@jordanbardella",
+      youtube: "https://youtube.com/@JordanBardella",
+    },
   },
   {
     id: "david-lisnard",
@@ -268,6 +349,9 @@ export const candidates: Candidate[] = [
       "Conseiller départemental des Alpes-Maritimes (depuis 2021)",
     ],
     programUrl: "https://www.unenouvelleenergie.fr/notre-programme/",
+    socialMedia: {
+      twitter: "https://x.com/DavidLisnard",
+    },
   },
   {
     id: "lydie-massard",
@@ -283,6 +367,10 @@ export const candidates: Candidate[] = [
     photo:
       "https://upload.wikimedia.org/wikipedia/commons/4/44/Member_of_the_European_Parliament_for_France_Lydie_Massard.jpg",
     mandates: ["Députée européenne (2017-2019)"],
+    socialMedia: {
+      twitter: "https://x.com/LydieMassard",
+      instagram: "https://instagram.com/lydiemassard",
+    },
   },
   {
     id: "jean-luc-melenchon",
@@ -311,6 +399,18 @@ export const candidates: Candidate[] = [
       { year: 2022, round: "1er", score: "21,95%" },
     ],
     programUrl: "https://melenchon2027.fr/programme2025/livre/",
+    socialMedia: {
+      twitter: "https://x.com/JLMelenchon",
+      instagram: "https://instagram.com/jlmelenchon",
+      youtube: "https://youtube.com/@JLMelenchon",
+      tiktok: "https://tiktok.com/@jlmelenchon",
+      facebook: "https://facebook.com/jlmelenchon",
+      bluesky: "https://bsky.app/profile/jlmelenchon.bsky.social",
+    },
+    campaignTeam: {
+      director: "Manuel Bompard",
+      advisors: ["Aurélien Saintoul", "Sophia Chikirou"],
+    },
   },
   {
     id: "edouard-philippe",
@@ -333,6 +433,15 @@ export const candidates: Candidate[] = [
       "Conseiller régional de Haute-Normandie (2004-2008)",
       "Conseiller général de la Seine-Maritime (2008-2012)",
     ],
+    socialMedia: {
+      twitter: "https://x.com/EPhilippe_LH",
+      instagram: "https://instagram.com/edouardphilippe",
+      linkedin: "https://linkedin.com/in/edouardphilippe",
+      facebook: "https://facebook.com/edouardphilippe",
+    },
+    campaignTeam: {
+      coDirectors: ["Marie Guévenoux", "Christophe Béchu", "Gilles Boyer"],
+    },
   },
   {
     id: "florian-philippot",
@@ -353,6 +462,10 @@ export const candidates: Candidate[] = [
       "Conseiller régional du Grand Est (2015-2021)",
     ],
     programUrl: "https://les-patriotes.fr/wp-content/uploads/2025/09/lespatriotes_projet.pdf",
+    socialMedia: {
+      twitter: "https://x.com/f_philippot",
+      youtube: "https://youtube.com/@florianphilippot",
+    },
   },
   {
     id: "bruno-retailleau",
@@ -374,6 +487,13 @@ export const candidates: Candidate[] = [
       "Président du Conseil régional des Pays de la Loire (2015-2017)",
       "Président du Conseil général de la Vendée (2010-2015)",
     ],
+    socialMedia: {
+      twitter: "https://x.com/BrunoRetailleau",
+      instagram: "https://instagram.com/brunoretailleau",
+    },
+    campaignTeam: {
+      spokesperson: "Othman Nas",
+    },
   },
   {
     id: "francois-ruffin",
@@ -394,6 +514,13 @@ export const candidates: Candidate[] = [
       "Fondateur du journal Fakir",
     ],
     programUrl: "https://nouspresident.fr/",
+    socialMedia: {
+      twitter: "https://x.com/FrancoisRuffin",
+      instagram: "https://instagram.com/francoisruffin",
+      facebook: "https://facebook.com/francoisruffin",
+      youtube: "https://youtube.com/@francoisruffin",
+      telegram: "https://t.me/francoisruffin",
+    },
   },
   {
     id: "marine-tondelier",
@@ -414,6 +541,10 @@ export const candidates: Candidate[] = [
       "Conseillère régionale des Hauts-de-France (2021-2022)",
     ],
     programUrl: "https://marinetondelier.fr/manifeste",
+    socialMedia: {
+      twitter: "https://x.com/MarineTondelier",
+      instagram: "https://instagram.com/marinetondelier",
+    },
   },
   {
     id: "eric-zemmour",
@@ -432,6 +563,11 @@ export const candidates: Candidate[] = [
     previousElections: [
       { year: 2022, round: "1er", score: "7,07%" },
     ],
+    socialMedia: {
+      twitter: "https://x.com/Zemmour",
+      youtube: "https://youtube.com/@EricZemmourOfficiel",
+      tiktok: "https://tiktok.com/@eric_zemmour",
+    },
   },
   {
     id: "raphael-glucksmann",
@@ -447,6 +583,10 @@ export const candidates: Candidate[] = [
     photo:
       "https://upload.wikimedia.org/wikipedia/commons/1/1f/1720448398743_20240708_GLUCKSMANN_Raphael_FR_006.jpg",
     mandates: ["Député européen (depuis 2019)", "Co-fondateur de Place Publique (2018)"],
+    socialMedia: {
+      twitter: "https://x.com/rglucks1",
+      instagram: "https://instagram.com/raphaelglucksmann",
+    },
   },
   {
     id: "francois-hollande",
@@ -473,5 +613,10 @@ export const candidates: Candidate[] = [
       { year: 2012, round: "1er", score: "28,63%" },
       { year: 2012, round: "2nd", score: "51,64%" },
     ],
+    socialMedia: {
+      twitter: "https://x.com/fhollande",
+      instagram: "https://instagram.com/francoishollande",
+      facebook: "https://facebook.com/francoishollande",
+    },
   },
 ];

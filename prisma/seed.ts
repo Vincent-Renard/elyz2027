@@ -4,6 +4,7 @@ import { parties } from "../src/data/parties";
 import { articles } from "../src/data/articles";
 import { polls } from "../src/data/polls";
 import { timelineEvents } from "../src/data/timeline";
+import { all as quizQuestions } from "../src/data/quiz-questions";
 
 const url = process.env.DATABASE_URL || "mongodb://localhost:27017/elyz2027";
 
@@ -44,6 +45,19 @@ async function main() {
   await db.collection("TimelineEvent").deleteMany({});
   await db.collection("TimelineEvent").insertMany(timelineEvents);
   console.log(`  ${timelineEvents.length} timeline events inserted.`);
+
+  await db.collection("QuizQuestion").deleteMany({});
+  for (const q of quizQuestions) {
+    await db.collection("QuizQuestion").insertOne({
+      question: q.question,
+      option0: q.options[0],
+      option1: q.options[1],
+      option2: q.options[2],
+      option3: q.options[3],
+      answer: q.answer,
+    });
+  }
+  console.log(`  ${quizQuestions.length} quiz questions inserted.`);
 
   await client.close();
   console.log("Database seeded successfully!");

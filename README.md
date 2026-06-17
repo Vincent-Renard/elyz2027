@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ElyZ 2027
 
-## Getting Started
+French presidential election 2027 dashboard — candidates, polls, topics, games, and media monitoring.
 
-First, run the development server:
+## Tech Stack
+
+- **Next.js 16** (App Router, React 19, TypeScript)
+- **Tailwind CSS 4**
+- **Prisma 7 + MongoDB** (optional, falls back to static data)
+- **Docker** (optional)
+
+## Pages
+
+| Route | Description |
+|---|---|
+| `/` | Timeline with candidate announcements and key dates |
+| `/candidats` | Candidate list with status filter |
+| `/candidats/[slug]` | Candidate profile: bio, polls, program, agenda, articles |
+| `/parti/[slug]` | Party page: history, position, candidates |
+| `/sondages` | Poll evolution chart and poll barometer |
+| `/sujets` | Topics with candidate positions as dot clouds |
+| `/jeux` | Quiz (12 random questions out of 200+), Quotes game, Score simulator, Memory |
+| `/veille` | Media monitoring — collected articles from 50 French news sources |
+
+## Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev -- -p 3001
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Stop
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pkill -f "next dev"
+```
 
-## Learn More
+## Database
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker compose up -d         # Start MongoDB
+npm run db:seed              # Seed candidates, parties, polls, articles, quiz questions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Media Monitor
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Collects election news from 50 French media outlets (Le Monde, Le Figaro, France Info, BFM TV, regional press, magazines, radios).
 
-## Deploy on Vercel
+```bash
+npm run media:fetch
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Articles are saved to `src/data/collected/` and visible on the `/veille` page.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Games
+
+- **Quiz** — 12 random questions from a bank of 200+ (candidates, parties, programs, history)
+- **Citations** — guess which candidate said the quote
+- **Simulateur** — drag sliders to simulate first-round scores
+- **Memory** — find matching candidate pairs
+
+## Data
+
+Static data lives in `src/data/` (TypeScript files). When MongoDB is available, the app reads from the database instead. Run `npm run db:seed` to populate MongoDB.

@@ -56,8 +56,22 @@ model Article {
   url       String
   summary   String
   category  String
+  mentions  String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model AgendaHint {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  source        String
+  candidateId   String
+  candidateName String
+  label         String
+  description   String
+  date          String
+  type          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model Poll {
@@ -79,6 +93,17 @@ model PollCandidate {
   color      String
   poll       Poll    @relation(fields: [pollId], references: [id])
   pollId     String  @db.ObjectId
+}
+
+model QuizQuestion {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  question  String
+  option0   String
+  option1   String
+  option2   String
+  option3   String
+  answer    Int
+  createdAt DateTime @default(now())
 }
 
 model TimelineEvent {
